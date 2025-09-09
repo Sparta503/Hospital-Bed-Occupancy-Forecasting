@@ -1,0 +1,28 @@
+# web + server
+fastapi
+uvicorn[standard]
+
+# MongoDB
+motor
+pymongo[srv]
+python-dotenv
+pydantic[email]
+
+# ODM (Optional, but recommended)
+beanie
+
+# data science / ML
+pandas
+numpy
+scikit-learn
+xgboost-cpu       # CPU-only XGBoost (smaller / easier). Use xgboost if you prefer standard package.
+prophet           # optional heavy dependency for baseline forecasting
+
+# model utils
+joblib
+mlflow            # optional - model registry
+
+# testing / dev
+pytest
+pytest-asyncio
+httpx
