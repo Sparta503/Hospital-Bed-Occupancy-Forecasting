@@ -2,11 +2,13 @@
 fastapi
 uvicorn[standard]
 
-# MongoDB
-motor
+# Database support
+aiosqlite  # For async SQLite support
+motor      # For MongoDB support
 pymongo[srv]
 python-dotenv
 pydantic[email]
+pydantic-settings
 
 # ODM (Optional, but recommended)
 beanie
