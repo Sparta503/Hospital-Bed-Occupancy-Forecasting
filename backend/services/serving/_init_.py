@@ -1,0 +1,2 @@
+from services.serving import model_registry, predict_bed_occupancy
+from services.serving import BedOccupancyPredictor, PredictorFactory
