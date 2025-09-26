@@ -1,17 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from services.db.mongodb import MongoDB
+from services.db.factory import get_database, close_database, DatabaseFactory
 import uvicorn
 from contextlib import asynccontextmanager
 from services.api import health
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Connect to MongoDB
-    await MongoDB.connect_db()
+    # Startup: Connect to database
+    db = await get_database()
+    print(f"Connected to {DatabaseFactory.get_database_type()} database")
     yield
-    # Shutdown: Close MongoDB connection
-    await MongoDB.close_db()
+    # Shutdown: Close database connection
+    await close_database()
+    print("Database connection closed")
 
 app = FastAPI(lifespan=lifespan)
 
@@ -26,6 +28,8 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health.router)
+from services.api import occupancy
+app.include_router(occupancy.router)
 
 @app.get("/")
 async def root():
