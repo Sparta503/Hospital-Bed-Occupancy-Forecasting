@@ -13,7 +13,32 @@ import logging
 import time
 from datetime import datetime
 
-from . import api_router
+from .routers import forecast_router, occupancy_router
+
+# ... rest of your imports
+
+# Create FastAPI application
+app = FastAPI(
+    title="Hospital Bed Occupancy Forecasting API",
+    description="API for forecasting hospital bed occupancy using machine learning models",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
+# Configure CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure this properly for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include routers
+app.include_router(forecast_router, prefix="/api/v1", tags=["forecast"])
+app.include_router(occupancy_router, prefix="/api/v1", tags=["occupancy"])
+
 from .schemas import ErrorResponse, ApiResponse
 from ..serving import model_registry
 
