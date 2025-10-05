@@ -23,7 +23,7 @@ def extract_occupancy_data_from_csv(csv_path: str) -> List[Dict[str, Any]]:
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
     # Dummy: Replace with actual CSV file path
-    dummy_csv = "occupancy_data.csv"
+    dummy_csv = "generated_dummy_occupancy_csv.py"
     try:
         records = extract_occupancy_data_from_csv(dummy_csv)
         print(records)
