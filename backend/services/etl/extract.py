@@ -22,10 +22,10 @@ def extract_occupancy_data_from_csv(csv_path: str) -> List[Dict[str, Any]]:
 
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
-    # Dummy: Replace with actual CSV file path
-    dummy_csv = "generated_dummy_occupancy_csv.py"
+    # Use the generated CSV file
+    csv_file = "occupancy_data.csv"
     try:
-        records = extract_occupancy_data_from_csv(dummy_csv)
+        records = extract_occupancy_data_from_csv(csv_file)
         print(records)
     except FileNotFoundError:
-        print(f"File {dummy_csv} not found. Please provide a valid CSV file.")
+        print(f"File {csv_file} not found. Please provide a valid CSV file.")
