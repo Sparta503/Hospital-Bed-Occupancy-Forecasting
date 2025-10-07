@@ -34,7 +34,15 @@ def evaluate_regression(y_true: Sequence[float], y_pred: Sequence[float]) -> Dic
 
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
-    y_true = [5, 7, 9, 6, 8]
-    y_pred = [5.1, 6.8, 8.9, 6.2, 7.7]
-    metrics = evaluate_regression(y_true, y_pred)
-    print("Evaluation metrics:", metrics)
+    import pandas as pd
+    # Load data from generated CSV
+    csv_file = "occupancy_data.csv"
+    try:
+        df = pd.read_csv(csv_file)
+        y_true = df["occupied_beds"].tolist()
+        # For demonstration, use the same as predictions (in practice, use your model's predictions)
+        y_pred = y_true.copy()
+        metrics = evaluate_regression(y_true, y_pred)
+        print("Evaluation metrics on occupancy_data.csv:", metrics)
+    except FileNotFoundError:
+        print(f"File {csv_file} not found. Please provide a valid CSV file.")
