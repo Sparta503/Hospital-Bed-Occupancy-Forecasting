@@ -24,9 +24,13 @@ def load_occupancy_records(records: List[Dict[str, Any]]) -> int:
 
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
-    dummy_data = [
-        {"hospital_id": "HOSP123", "ward_id": "WARD1", "occupied_beds": 20, "record_date": datetime.now()},
-        {"hospital_id": "HOSP123", "ward_id": "WARD2", "occupied_beds": 15, "record_date": datetime.now()},
-    ]
-    loaded = load_occupancy_records(dummy_data)
-    print(f"Loaded {loaded} records.")  
+    import pandas as pd
+    # Load records from generated CSV
+    csv_file = "occupancy_data.csv"
+    try:
+        df = pd.read_csv(csv_file)
+        records = df.to_dict(orient="records")
+        loaded = load_occupancy_records(records)
+        print(f"Loaded {loaded} records from {csv_file}.")
+    except FileNotFoundError:
+        print(f"File {csv_file} not found. Please provide a valid CSV file.")
