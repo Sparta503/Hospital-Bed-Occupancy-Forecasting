@@ -28,9 +28,13 @@ def transform_occupancy_data(raw_records: List[Dict[str, Any]]) -> List[Dict[str
 
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
-    dummy_data = [
-        {"hospital_id": "HOSP123", "ward_id": "WARD1", "occupied_beds": None, "record_date": pd.Timestamp.now()},
-        {"hospital_id": "HOSP123", "ward_id": "WARD2", "occupied_beds": 15, "record_date": pd.Timestamp.now()},
-    ]
-    cleaned = transform_occupancy_data(dummy_data)
-    print(cleaned)
+    import pandas as pd
+    # Load records from generated CSV
+    csv_file = "occupancy_data.csv"
+    try:
+        df = pd.read_csv(csv_file)
+        records = df.to_dict(orient="records")
+        cleaned = transform_occupancy_data(records)
+        print(cleaned)
+    except FileNotFoundError:
+        print(f"File {csv_file} not found. Please provide a valid CSV file.")
