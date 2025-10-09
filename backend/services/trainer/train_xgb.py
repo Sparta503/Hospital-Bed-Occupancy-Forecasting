@@ -48,11 +48,16 @@ def train_xgb_model(
 
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
-    # Dummy data
-    df = pd.DataFrame({
-        "feature1": [1, 2, 3, 4, 5],
-        "feature2": [10, 20, 30, 40, 50],
-        "occupied_beds": [5, 7, 9, 6, 8]
-    })
-    model_path = train_xgb_model(df)
-    print(f"Model saved to {model_path}")
+    import pandas as pd
+    # Load data from generated CSV
+    csv_file = "occupancy_data.csv"
+    try:
+        df = pd.read_csv(csv_file)
+        # Use ward_id as a categorical feature (convert to codes), and record_date as days since first date
+        df["ward_id_code"] = df["ward_id"].astype("category").cat.codes
+        df["days_since_start"] = (pd.to_datetime(df["record_date"]) - pd.to_datetime(df["record_date"]).min()).dt.days
+        feature_df = df[["ward_id_code", "days_since_start", "occupied_beds"]]
+        model_path = train_xgb_model(feature_df, target_column="occupied_beds")
+        print(f"Model saved to {model_path}")
+    except FileNotFoundError:
+        print(f"File {csv_file} not found. Please provide a valid CSV file.")
