@@ -11,14 +11,14 @@ from .load import load_occupancy_records
 # Dummy extract step
 def extract_data() -> List[Dict[str, Any]]:
     """
-    Extract data from source (placeholder).
+    Extract data from the generated occupancy_data.csv file.
     Returns:
         List of raw records
     """
-    return [
-        {"hospital_id": "HOSP123", "ward_id": "WARD1", "occupied_beds": 20, "record_date": datetime.now()},
-        {"hospital_id": "HOSP123", "ward_id": "WARD2", "occupied_beds": 15, "record_date": datetime.now()},
-    ]
+    import pandas as pd
+    csv_file = "occupancy_data.csv"
+    df = pd.read_csv(csv_file)
+    return df.to_dict(orient="records")
 
 # Dummy transform step
 def transform_data(raw_records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
