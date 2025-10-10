@@ -42,10 +42,12 @@ def train_prophet_model(
 
 # Example usage (remove or adapt in production)
 if __name__ == "__main__":
-    # Dummy data
-    df = pd.DataFrame({
-        "record_date": pd.date_range(start="2023-01-01", periods=10, freq="D"),
-        "occupied_beds": [5, 6, 7, 8, 7, 6, 7, 8, 9, 10]
-    })
-    model_path = train_prophet_model(df)
-    print(f"Model saved to {model_path}")
+    import pandas as pd
+    # Load data from generated CSV
+    csv_file = "occupancy_data.csv"
+    try:
+        df = pd.read_csv(csv_file)
+        model_path = train_prophet_model(df)
+        print(f"Model saved to {model_path}")
+    except FileNotFoundError:
+        print(f"File {csv_file} not found. Please provide a valid CSV file.")
