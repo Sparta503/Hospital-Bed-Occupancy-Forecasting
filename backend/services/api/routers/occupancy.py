@@ -6,21 +6,28 @@ from datetime import datetime
 
 router = APIRouter()
 
-@router.post("/occupancy", response_model=ApiResponse, responses={400: {"model": ErrorResponse}})
-async def add_occupancy_record(record: BedOccupancyInput) -> Any:
+@router.post("/occupancy")
+async def add_occupancy_record(record: BedOccupancyInput) -> dict:
     """
     Ingest a new hospital bed occupancy record.
     """
     try:
         # Dummy logic: In production, save to DB
-        return ApiResponse(
-            success=True,
-            message="Occupancy record ingested successfully.",
-            data={
+        return {
+            "success": True,
+            "message": "Occupancy record ingested successfully.",
+            "data": {
                 "record_id": str(uuid4()),
-                "received": record.dict(),
-                "timestamp": datetime.now()
+                "received": record.model_dump(),
+                "timestamp": datetime.now().isoformat()
+            }
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error_code": "INVALID_RECORD",
+                "error_message": str(e),
+                "details": {}
             }
         )
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
