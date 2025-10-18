@@ -19,11 +19,18 @@ def transform_occupancy_data(raw_records: List[Dict[str, Any]]) -> List[Dict[str
     if not raw_records:
         return []
     df = pd.DataFrame(raw_records)
-    # Dummy transformation: fill missing values, ensure types
+    
+    # Convert record_date to datetime if it's a string
+    if isinstance(df['record_date'].iloc[0], str):
+        df['record_date'] = pd.to_datetime(df['record_date'])
+    
+    # Fill missing values and ensure types
     df = df.fillna({"occupied_beds": 0})
     df["occupied_beds"] = df["occupied_beds"].astype(int)
-    # Add a dummy feature
-    df["is_weekend"] = df["record_date"].apply(lambda d: d.weekday() >= 5)
+    
+    # Add weekend feature
+    df["is_weekend"] = df["record_date"].dt.dayofweek >= 5
+    
     return df.to_dict(orient="records")
 
 # Example usage (remove or adapt in production)
